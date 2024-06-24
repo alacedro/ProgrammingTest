@@ -46,15 +46,21 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet(Name = "GetAvatar")]
-        public AvatarResponse Get(string userIdentifier)
+        public AvatarResponse Get(string userIdentifier = null)
         {
             AvatarResponse avatarResponse = new AvatarResponse();
-            char lastChar = userIdentifier.Last();
+            
             int lastDigit;
             string format = _configuration["DicebearImagesUrlFormat"];
+            string defaultUrl = string.Format(format, "default");
+
 
             //Case last character is [6,7,8,9]
-            if (IsLastCharBetween6and9(userIdentifier))
+            if (string.IsNullOrEmpty(userIdentifier))
+            {
+                avatarResponse.Url = defaultUrl;
+            } 
+            else if (IsLastCharBetween6and9(userIdentifier))
             {
                 avatarResponse.Url = _avatarService.GetDicebearAvatarUrl(userIdentifier);
 
@@ -67,6 +73,7 @@ namespace WebApplication1.Controllers
             //Case contains vowel
             else if (!string.IsNullOrEmpty(format) && HasVowel(userIdentifier))
             {
+                char lastChar = userIdentifier.Last();
                 avatarResponse.Url = string.Format(format, lastChar.ToString());
             }
             //Case contains non-alphanumeric
@@ -78,7 +85,7 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                avatarResponse.Url = string.Format(format, "default");
+                avatarResponse.Url = defaultUrl;
             }
 
             return avatarResponse;
