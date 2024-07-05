@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet(Name = "GetAvatar")]
-        public AvatarResponse Get(string userIdentifier = null)
+        public async Task<AvatarResponse> Get(string userIdentifier = null)
         {
             AvatarResponse avatarResponse = new AvatarResponse();
             
@@ -62,7 +62,7 @@ namespace WebApplication1.Controllers
             } 
             else if (IsLastCharBetween6and9(userIdentifier))
             {
-                avatarResponse.Url = _avatarService.GetDicebearAvatarUrl(userIdentifier);
+                avatarResponse.Url = await _avatarService.GetDicebearAvatarUrl(userIdentifier);
 
             }
             //Case last character is [1,2,3,4,5]

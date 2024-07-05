@@ -35,7 +35,7 @@ namespace ProgrammingTestInfrastructure.Services
             return result;
         }
 
-        public string GetDicebearAvatarUrl(string identifier)
+        public async Task<string> GetDicebearAvatarUrl(string identifier)
         {
             string result = "";
 
@@ -43,15 +43,15 @@ namespace ProgrammingTestInfrastructure.Services
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = client.GetAsync(imageRequestUrl).Result;
+                HttpResponseMessage response = await client.GetAsync(imageRequestUrl);
                 response.EnsureSuccessStatusCode();
-                string responseBody = response.Content.ReadAsStringAsync().Result;
+                string responseBody = await response.Content.ReadAsStringAsync();
 
                 var responseObject = JsonSerializer.Deserialize<Dictionary<string, object>>(responseBody);
 
                 if (responseObject != null)
                 {
-                    result = responseObject["url"].ToString();
+                    result = responseObject["url"].ToString() ?? "";
                 }
             }
 
