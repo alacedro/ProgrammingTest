@@ -1,12 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using ProgrammingTestInfrastructure.Interfaces;
 using ProgrammingTestInfrastructure.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace ProgrammingTestInfrastructure.Services
 {
@@ -14,15 +9,15 @@ namespace ProgrammingTestInfrastructure.Services
     {
         private IConfiguration _configuration;
 
-        public AvatarService(IConfiguration configuration) 
+        public AvatarService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        
+
         public string GetAvatarUrl(string identifier)
         {
             string result = "";
-            
+
             using (var db = new DataContext())
             {
                 var dbImage = db.Images.Where(i => i.Id == identifier.Last()).FirstOrDefault();

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingTestInfrastructure.Interfaces;
-using ProgrammingTestInfrastructure.Models;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace WebApplication1.Controllers
@@ -49,7 +47,7 @@ namespace WebApplication1.Controllers
         public async Task<AvatarResponse> Get(string userIdentifier = null)
         {
             AvatarResponse avatarResponse = new AvatarResponse();
-            
+
             int lastDigit;
             string format = _configuration["DicebearImagesUrlFormat"];
             string defaultUrl = string.Format(format, "default");
@@ -59,7 +57,7 @@ namespace WebApplication1.Controllers
             if (string.IsNullOrEmpty(userIdentifier))
             {
                 avatarResponse.Url = defaultUrl;
-            } 
+            }
             else if (IsLastCharBetween6and9(userIdentifier))
             {
                 avatarResponse.Url = await _avatarService.GetDicebearAvatarUrl(userIdentifier);
